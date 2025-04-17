@@ -1,9 +1,9 @@
 def donuts(count):
-    # main message
+    # prompt message
     message = 'Number of donuts: '
 
     # check if the count is a string or not, if yes then give error
-    if (type(count) == str) or (count <= 0):
+    if type(count) == str:
         return "Error: Please enter a integer"
     
     # if it is less than 0 give error
@@ -30,8 +30,8 @@ def verbing(s):
         return s + 'ing'
     
     #add 'ly' if the word ends with 'ing'
-    elif s[-3:] == 'ing':
-        return s + 'ly'
+    elif len(s) >= 3 and s[-3:] == 'ing':
+        return s.replace('ing','ly')
     
     #return the word if it's length is less than 2
     elif len(s) <=2:
