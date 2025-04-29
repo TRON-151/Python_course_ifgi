@@ -24,15 +24,37 @@ class shopping_cart:
             # then it shows an error
             print("ERROR: Item not present in cart")
 
-        # but if that item "existing_item" exists then we delete no. of items as given in quantity 
-        elif existing_item in self.items:
-            self.items[existing_item] -= quantity
+        # but if that item "existing_item" exists in "items" and 
+        # also the quantity is a integer then 
+        # we delete no. of items as given in quantity using condition 
+        elif existing_item in self.items and type(quantity) is int:
+
+            # if the quantity to be deleted is more than which is in the card we through ERROR
+            if self.items[existing_item] < quantity:
+                print(f"ERROR: No. of {existing_item} is less to be removed")
+            
+            # if the quantity is not a positive number we through error again
+            elif quantity < 0:
+                print(f"ERROR: {quantity} is not a positive number")
+
+            # else we are clear, we delete the no. of items and display the results     
+            else:
+                self.items[existing_item] -= quantity
+                self.display_items()
+        
+        # if any of the item is not in a desireable datatype/format then we display error
+        else:
+            print("ERROR: One/Both of the values is/are not in correct format")
 
     # this function is just displaying the items in the cart and also their quantity
     def display_items(self):
+
         # printing items
         print('ITEM\t:QUANTITY')
+
+        # we use a for loop to take all the items from the cart and print them in format
         for item, its_qunatity in self.items.items():
             print(f"{item}\t:{its_qunatity}")
-        # there quantity
+            
+        # their quantity
         print("Total items in the Cart: ", sum(self.items.values()))
