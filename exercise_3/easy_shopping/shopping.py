@@ -1,8 +1,8 @@
 class shopping_cart:
+
     def __init__(self):
         # defining the items as dict to save the quantity as well
         self.items = {}
-
     # this function takes new item and it's quantity
     def add_item(self, new_item, quantity):
 
@@ -15,6 +15,7 @@ class shopping_cart:
         elif new_item not in self.items:
             # then we add that new item with it's quantity
             self.items[new_item] = quantity
+
 
     # this function removes the item from the cart
     def remove_item(self, existing_item, quantity):
@@ -41,10 +42,13 @@ class shopping_cart:
             else:
                 self.items[existing_item] -= quantity
                 self.display_items()
+            
         
         # if any of the item is not in a desireable datatype/format then we display error
         else:
             print("ERROR: One/Both of the values is/are not in correct format")
+
+
 
     # this function is just displaying the items in the cart and also their quantity
     def display_items(self):
@@ -54,7 +58,8 @@ class shopping_cart:
 
         # we use a for loop to take all the items from the cart and print them in format
         for item, its_qunatity in self.items.items():
-            print(f"{item}\t:{its_qunatity}")
+            if its_qunatity != 0:
+                print(f"{item}\t:{its_qunatity}") # only print them if the quantity is bigger than 0
             
         # their quantity
         print("Total items in the Cart: ", sum(self.items.values()))

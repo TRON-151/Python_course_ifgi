@@ -32,6 +32,6 @@ print(gap)
 #cart and display updated items.
 
 # here "remove_item" function calls the display function by itself 
-shop.remove_item("Egg", 2)
+shop.remove_item("Egg", 5)
 
 
