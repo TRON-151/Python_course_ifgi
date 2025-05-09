@@ -1,6 +1,8 @@
 # Import modules
+from qgis.core import QgsProject, QgsApplication # type: ignore
 from qgis.core import QgsVectorLayer, QgsProject # type: ignore
 from qgis.core import * # type: ignore
+from qgis.core import QgsApplication # type: ignore
 import os
 
 # Supply path to qgis install location

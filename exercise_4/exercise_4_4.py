@@ -1,3 +1,7 @@
+from qgis.core import QgsProject # type: ignore
+import processing # type: ignore
+
+
 # request Schools and districts by name
 schools = QgsProject.instance().mapLayersByName('Schools')[0]
 districts = QgsProject.instance().mapLayersByName('Muenster_City_Districts')[0]

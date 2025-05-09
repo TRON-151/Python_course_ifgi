@@ -1,4 +1,5 @@
 import csv
+from qgis.core import QgsProject # type: ignore
 
 # create csv
 with open(r'C:\Users\Bem\Downloads\SchoolReport.csv', 'w', newline='') as csvfile:
