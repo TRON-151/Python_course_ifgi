@@ -44,9 +44,11 @@ else:
                 yS = sfeature.geometry().get().y()
                 xD = centroid.get().x()
                 yD = centroid.get().y()
+                # Optional challenge !
+                # calculate the distance between the school and the centroid of the district ()
                 distance=da.measureLine([QgsPointXY(xS,yS),QgsPointXY(xD,yD)])/1000
                 intersecting_schools.append(f"{sfeature['Name']},{sfeature['SchoolType']}\nDistance to City Center: {distance:.2f} km")
-    # sort List
+    # sort the List
     intersecting_schools.sort()
     mc.zoomToSelected()
     if intersecting_schools:
