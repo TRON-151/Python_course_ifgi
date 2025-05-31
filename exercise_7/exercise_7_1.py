@@ -118,7 +118,7 @@ class create_city_district_profile(QgsProcessingAlgorithm):
         # geometry.
         # the first parameter Name of the district
         self.addParameter(
-            QgsProcessingParameterFeatureSource(
+            QgsProcessingParameterEnum(
                 self.district_in, 
                 self.tr('Choose District'),
                 self.sort_district(),
@@ -128,7 +128,7 @@ class create_city_district_profile(QgsProcessingAlgorithm):
         )
         # this parameter is for the option of pools or schools
         self.addParameter(
-            QgsProcessingParameterFeatureSink(
+            QgsProcessingParameterEnum(
                 self.Pool_or_School,
                 self.tr('Which information do you want to include in PDF?'),
                 ["Public_Swimming_Pools","Schools"],
@@ -138,7 +138,7 @@ class create_city_district_profile(QgsProcessingAlgorithm):
         )
         # this parameter is to get the path but with filter of pdf only
         self.addParameter(
-            QgsProcessingParameterFeatureSink(
+            QgsProcessingParameterFileDestination(
                 self.Storage_path,
                 self.tr('Storage path for the output PDF?'),
                 fileFilter = "PDF files (.PDF)"
@@ -167,10 +167,10 @@ class create_city_district_profile(QgsProcessingAlgorithm):
         return(district_list)
     
     # this method is to select the district among the others 
-    def choose_district(self, district_name):
-        dist = QgsProject.instance().mapLayersByName("Muenster_City_District")[0]
-        show = f"\"Name\" = '{district_name}'"
-        dist.selectedByExpression(show, QgsVectorLayer.SetSelection)
+    def choose_district(self, district):
+        dist = QgsProject.instance().mapLayersByName("Muenster_City_Districts")[0]
+        show = f"\"Name\" = '{district}'"
+        dist.selectByExpression(show, QgsVectorLayer.SetSelection)
         
         choosen_district = dist.selectedFeatures()[0]
 
@@ -275,10 +275,10 @@ class create_city_district_profile(QgsProcessingAlgorithm):
         return path
     
     # last method to create the pdf doc
-    def create_pdf(self, pdf_output, district_name, parent, area, household_number, parcels, schools_or_pools, schools_or_pools_number, picture_path):
-        from reportlab.pdfgen import canvas
+    def create_pdf(self, pdf_output, district_name, parent, area, household_number, parcels, choice, schools_or_pools_number, picture_path):
+        
+        import reportlab # issue
         from reportlab.lib.pagesizes import letter
-        from reportlab.pdfgen import canvas
         from reportlab.lib.styles import getSampleStyleSheet
         from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer, Image
         from reportlab.lib.units import inch
@@ -295,11 +295,11 @@ class create_city_district_profile(QgsProcessingAlgorithm):
         area_text = Paragraph(f"Size: {area} square kilometers", styles["Normal"])
         household_text = Paragraph(f"Number of Housholds: {household_number}", styles["Normal"])
         parcels_text =Paragraph(f"Number of Parcels {parcels}", styles["Normal"])
-        schools_or_pools_text = Paragraph(f"Number of {schools_or_pools}: {schools_or_pools_number}", styles["Normal"])
+        schools_or_pools_text = Paragraph(f"Number of {choice}: {schools_or_pools_number}", styles["Normal"])
         
         #images
         map = Image(picture_path, 4*inch, 4*inch)
-        diagramm = Image(self.plot_type_distribution(self.count_feature_types(schools_or_pools, district_name)), 4*inch, 3*inch)
+        #diagramm = Image() # try later
         
 
 
