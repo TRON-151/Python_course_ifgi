@@ -46,5 +46,39 @@ with arcpy.da.InsertCursor(path, fields_output) as icur:
                 # we will check if the status is active or not
                 if status and status.lower() == 'active':
                     icur.insertRow((shape, point, typ, status))
-                   
-    
+
+# now lets introduce some buffer zone
+
+# buffer values for different types
+buff_val = {
+    'mast': 300,
+    'mobile_antenna': 50,
+    'building_antenna': 100
+}
+# path for the new output feature class buffer_zone
+buffered_path = os.path.join(arcpy.env.workspace, 'buffer_zone')
+
+# before proceeding lets delete the existing one:
+if arcpy.Exists(buffered_path):
+    arcpy.Delete_management(buffered_path)
+
+# now we add a new field for buffer distance with dtype double
+arcpy.AddField_management(path, 'buffere_dist', 'DOUBLE')
+
+# 
+with arcpy.da.UpdateCursor(path, ['type', 'buffere_dist']) as ucur:
+    for typ, _ in ucur:
+        dist = buff_val.get(typ, 0)
+        ucur.updateRow((typ, dist))
+        
+# path for the new output feature class buffer_zone
+buffered_path = os.path.join(arcpy.env.workspace, 'buffer_zone')
+
+arcpy.Buffer_analysis(
+    in_features=path,
+    out_feature_class=buffered_path,
+    buffer_distance_or_field='buffere_dist',
+    line_side ='FULL',
+    line_end_type='ROUND',
+    dissolve_option='ALL'
+)
